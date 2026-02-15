@@ -1,0 +1,37 @@
+name: Upload to Google Cloud Storage
+
+on:
+    push:
+        branches: main
+    workflow_dispatch:
+
+jobs:
+    upload:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v2
+              with:
+                  credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+            - name: Set up Cloud SDK
+              uses: google-github-actions/setup-gcloud@v2
+              with:
+                  project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+            - name: Upload files to GCS
+              run: |
+                  # Upload index.html to the specified GCS bucket
+                  gsutil cp index.html gs://${{ secrets.GCS_BUCKET_NAME }}/
+
+                  # Upload style.css to the specified GCS bucket
+                  gsutil cp style.css gs://${{ secrets.GCS_BUCKET_NAME }}/
+
+            - name: Verify upload
+              run: |
+                  # List the contents of the GCS bucket to verify the upload
+                  gsutil ls gs://${{ secrets.GCS_BUCKET_NAME }}/

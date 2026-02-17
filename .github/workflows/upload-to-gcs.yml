@@ -30,6 +30,10 @@ jobs:
 
                   # Upload style.css to the specified GCS bucket
                   gsutil -h "Cache-Control:no-cache,max-age=0" cp style.css gs://${{ secrets.GCS_BUCKET_NAME }}/
+            
+            # - name: Invalidate Cloud CDN cache
+            #   run: |
+            #       gcloud compute url-maps invalidate-cdn-cache ${{ secrets.CDN_URL_MAP_NAME }} --path "/*" --project ${{ secrets.GCP_PROJECT_ID }}
 
             - name: Verify upload
               run: |

@@ -26,10 +26,10 @@ jobs:
             - name: Upload files to GCS
               run: |
                   # Upload index.html to the specified GCS bucket
-                  gsutil -h "Cache-Control:no-cache,max-age=0" cp index.html gs://${{ secrets.GCS_BUCKET_NAME }}/
+                  gsutil -h "Cache-Control:no-cache,max-age=60" cp index.html gs://${{ secrets.GCS_BUCKET_NAME }}/
 
                   # Upload style.css to the specified GCS bucket
-                  gsutil -h "Cache-Control:no-cache,max-age=0" cp style.css gs://${{ secrets.GCS_BUCKET_NAME }}/
+                  gsutil -h "Cache-Control:no-cache,max-age=60" cp style.css gs://${{ secrets.GCS_BUCKET_NAME }}/
             
             # - name: Invalidate Cloud CDN cache
             #   run: |
